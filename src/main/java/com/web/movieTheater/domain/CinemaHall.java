@@ -9,7 +9,7 @@ public class CinemaHall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "row_count")
@@ -38,11 +38,11 @@ public class CinemaHall {
         this.seats = seats;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

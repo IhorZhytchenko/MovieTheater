@@ -8,7 +8,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "videoSession_id")
     private VideoSession videoSession;
@@ -22,11 +22,11 @@ public class Booking {
     @JoinColumn(name = "bookingType_id")
     private BookingType bookingType;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

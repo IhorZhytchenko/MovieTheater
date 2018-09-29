@@ -8,7 +8,7 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "row")
     private int row;
     @Column(name = "number")
@@ -16,12 +16,23 @@ public class Seat {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cinemaHall_id")
     private CinemaHall cinemaHall;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "priceCategory_id")
+    private PriceCategory priceCategory;
 
-    public long getId() {
+    public PriceCategory getPriceCategory() {
+        return priceCategory;
+    }
+
+    public void setPriceCategory(PriceCategory priceCategory) {
+        this.priceCategory = priceCategory;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

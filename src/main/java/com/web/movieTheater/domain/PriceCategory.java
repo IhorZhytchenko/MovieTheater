@@ -3,14 +3,14 @@ package com.web.movieTheater.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "booking_type")
-public class BookingType {
+@Table(name = "price_category")
+public class PriceCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "type")
-    private String type;
+    @Column(name = "price")
+    private int price;
 
     public Long getId() {
         return id;
@@ -20,11 +20,11 @@ public class BookingType {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public int getPrice() {
+        return price;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
