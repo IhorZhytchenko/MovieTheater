@@ -10,7 +10,7 @@ public class Booking {
     @Column(name = "id")
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "videoSession_id")
+    @JoinColumn(name = "video_session_id")
     private VideoSession videoSession;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seat_id")
@@ -19,7 +19,7 @@ public class Booking {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bookingType_id")
+    @JoinColumn(name = "booking_type_id")
     private BookingType bookingType;
 
     public Long getId() {

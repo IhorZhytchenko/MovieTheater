@@ -31,4 +31,8 @@ public class SeatService {
     public boolean exists(Long id) {
         return this.repository.existsById(id);
     }
+
+    public List<Seat> findByHallIdAndRow(Long hallId, int row) {
+    return this.repository.findAllByCinemaHallIdAndRow(hallId, row);
+    }
 }

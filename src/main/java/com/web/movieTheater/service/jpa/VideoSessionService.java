@@ -1,11 +1,12 @@
 package com.web.movieTheater.service.jpa;
 
-import com.web.movieTheater.domain.User;
+
 import com.web.movieTheater.domain.VideoSession;
 import com.web.movieTheater.repository.VideoSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,5 +31,9 @@ public class VideoSessionService {
     }
     public boolean exists(Long id) {
         return this.repository.existsById(id);
+    }
+
+    public List<VideoSession> findByVideoId(Long videoId) {
+        return this.repository.getAllByMovieId(videoId, LocalDateTime.now());
     }
 }

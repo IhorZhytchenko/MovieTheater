@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css"  media="all"  th:href="@{/css/st.css}" href="../css/st.css">
+    <script>
+        function f(el) {
+            alert(el.id);
+        }
+    </script>
+</head>
+<body>
+
+
+<!--<div th:replace="fragments/adminMenu.html :: top-menu"/>-->
+
+<div class="w3-container w3-margin">
+
+
+    <div class="w3-container w3-purple">
+        <h3 th:text="${vSession.movie.name}">Video</h3>
+    </div>
+    <div style="height: 24px;"></div>
+    <div class="w3-container">
+        <button class="screen" disabled>SCREEN</button>
+    </div>
+    <table>
+    <tr th:each="row: ${seats}">
+        <th th:each="seat :${row}">
+            <button class="seat1" th:id="${seat.id}" th:text="${seat.number}" onclick="f(this)"></button>
+        </th>
+
+    </tr>
+    </table>
+    <!--<ul  class="w3-ul">-->
+        <!--<div th:each="vSession : ${sessions}" class="w3-container">-->
+            <!--<li><a th:href="'/hall?id=' + ${vSession.id}" href="#" th:text="${vSession.movie.name} + '  ' + ${vSession.cinemaHall.name} + '  ' + ${vSession.start}">Name</a></li>-->
+
+        <!--</div>-->
+    <!--</ul>-->
+    <div style="height: 24px;"></div>
+
+</div>
+
+</body>
+</html>

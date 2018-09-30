@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "seat")
-public class Seat {
+public class Seat implements Comparable<Seat> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -14,10 +14,10 @@ public class Seat {
     @Column(name = "number")
     private int number;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cinemaHall_id")
+    @JoinColumn(name = "cinema_hall_id")
     private CinemaHall cinemaHall;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "priceCategory_id")
+    @JoinColumn(name = "price_category_id")
     private PriceCategory priceCategory;
 
     public PriceCategory getPriceCategory() {
@@ -73,5 +73,10 @@ public class Seat {
     @Override
     public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    @Override
+    public int compareTo(Seat o) {
+        return Integer.compare(this.getNumber(),o.getNumber());
     }
 }

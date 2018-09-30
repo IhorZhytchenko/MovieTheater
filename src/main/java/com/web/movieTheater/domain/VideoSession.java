@@ -15,7 +15,7 @@ public class VideoSession {
     @Column(name = "start")
     private LocalDateTime start;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cinemaHall_id")
+    @JoinColumn(name = "cinema_hall_id")
     private CinemaHall cinemaHall;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")

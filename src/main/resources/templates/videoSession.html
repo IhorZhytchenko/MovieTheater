@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+
+<!--<div th:replace="fragments/adminMenu.html :: top-menu"/>-->
+
+<div class="w3-container w3-margin">
+
+
+    <div class="w3-container w3-purple">
+        <h3>Video Sessions</h3>
+    </div>
+    <div style="height: 24px;"></div>
+    <ul  class="w3-ul">
+        <div th:each="vSession : ${sessions}" class="w3-container">
+            <li><a th:href="'/session/hall?id=' + ${vSession.id}" href="#" th:text="${vSession.movie.name} + '  ' + ${vSession.cinemaHall.name} + '  ' + ${vSession.start}">Name</a></li>
+
+        </div>
+    </ul>
+    <div style="height: 24px;"></div>
+
+</div>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
 package com.web.movieTheater.domain;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,14 +13,12 @@ public class Movie {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "description")
+    private String description;
     @Column(name = "photo")
     private String photo;
-    @Column(name = "duration")
-    private Duration duration;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "movieState_id")
+    @JoinColumn(name = "movie_state_id")
     private MovieState movieState;
     @OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<VideoSession> videoSessions = new HashSet<>();
@@ -50,12 +47,12 @@ public class Movie {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
     public String getPhoto() {
@@ -64,14 +61,6 @@ public class Movie {
 
     public void setPhoto(String photo) {
         this.photo = photo;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Duration duration) {
-        this.duration = duration;
     }
 
     public MovieState getMovieState() {
