@@ -1,5 +1,8 @@
 package com.web.movieTheater.service;
 
+import com.web.movieTheater.domain.User;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,5 +15,18 @@ public class SecurityService {
 
         return result;
     }
+
+//    public User getUser() {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Object credential = auth.getPrincipal();
+//        User user;
+//        if (credential.equals("anonymousUser")) {
+//            user = null;
+//        } else {
+//            user = (User) credential;
+//        }
+//
+//        return user;
+//    }
 
 }

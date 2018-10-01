@@ -1,5 +1,7 @@
 package com.web.movieTheater.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Seat implements Comparable<Seat> {
     private int number;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cinema_hall_id")
+    @JsonIgnore
     private CinemaHall cinemaHall;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "price_category_id")

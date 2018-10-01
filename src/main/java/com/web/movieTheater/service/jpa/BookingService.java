@@ -10,7 +10,30 @@ import java.util.List;
 public class BookingService {
     @Autowired
     private BookingRepository repository;
+    @Autowired
+    private SeatService seatService;
+    @Autowired
+    private VideoSessionService videoSessionService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private BookingTypeService bookingTypeService;
 
+
+
+    public Booking saveBookingIfNotExists(Long videoSessionId, Long seatId, Long userId) {
+        Booking booking = null;
+        if (!(this.existsByVideoSessionIdAndSeatId(videoSessionId, seatId))) {
+            booking = new Booking();
+            booking.setSeat(this.seatService.findById(seatId));
+            booking.setVideoSession(this.videoSessionService.findById(videoSessionId));
+            booking.setUser(this.userService.findById(userId));
+            booking.setBookingType(this.bookingTypeService.findByType("booked"));
+            booking = this.save(booking);
+        }
+
+        return booking;
+    }
     public Booking save(Booking booking) {
         return this.repository.save(booking);
     }
@@ -28,6 +51,9 @@ public class BookingService {
     }
     public boolean exists(Long id) {
         return this.repository.existsById(id);
+    }
+    public boolean existsByVideoSessionIdAndSeatId(Long videoSessionId, Long seatId) {
+        return this.repository.existsBookingByVideoSessionIdAndSeatId(videoSessionId, seatId);
     }
 
 }

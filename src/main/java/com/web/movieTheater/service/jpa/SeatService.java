@@ -35,4 +35,7 @@ public class SeatService {
     public List<Seat> findByHallIdAndRow(Long hallId, int row) {
     return this.repository.findAllByCinemaHallIdAndRow(hallId, row);
     }
+    public List<Seat> getAllBookingByVideoSessionId(Long vsId) {
+        return this.repository.getAllBookingByVideoSession(vsId);
+    }
 }

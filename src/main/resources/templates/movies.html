@@ -22,7 +22,7 @@
     <table class="w3-table w3-striped w3-bordered">
         <div th:each="movie : ${movies}" class="w3-container w3-light-purple">
             <h3> <a th:href="'/session?id=' + ${movie.id}" href="#" th:text="${movie.name}">Name</a> </h3>
-              <h5 th:text="${movie.name}">Description</h5>
+              <h5 th:text="${movie.description}">Description</h5>
 
         </div>
     </table>

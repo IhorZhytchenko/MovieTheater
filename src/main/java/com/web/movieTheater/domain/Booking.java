@@ -1,5 +1,7 @@
 package com.web.movieTheater.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,12 +13,14 @@ public class Booking {
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "video_session_id")
+    @JsonIgnore
     private VideoSession videoSession;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seat_id")
     private Seat seat;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booking_type_id")

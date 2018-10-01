@@ -5,11 +5,55 @@
     <title>Movies</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" type="text/css"  media="all"  th:href="@{/css/st.css}" href="../css/st.css">
     <script>
-        function f(el) {
-            alert(el.id);
+        $(window).load(
+            setTimeout(showBookedSeat, 500)
+        );
+
+        function showBookedSeat() {
+            var vSessionId = $("#vSessionId").val();
+            $.ajax('./bookedSeats', {
+                method: 'get',
+                data: {vsId : vSessionId},
+
+                complete: function (data) {
+                    var seats = JSON.parse(data.responseText);
+                    for(var i = 0; i < seats.length; i++) {
+                        $("#" + seats[i].id).removeClass().addClass( "booked").attr("disabled", "disabled");
+                    }
+                }
+
+            });
+        }
+
+        function bookingSeat(el) {
+            var seatId = el.id;
+            var vsId = $("#vSessionId").val();
+            var userId = $("#curUser").val();
+            $.ajax({
+                type: "POST",
+                url: './booking',
+                data: {
+                    vsId: vsId,
+                    seatId: seatId,
+                    userId: userId
+                },
+                complete: function (data) {
+                    var booking = JSON.parse(data.responseText);
+                    if (booking != null) {
+                        $("#" + booking.seat.id).removeClass().addClass( "booked").attr("disabled", "disabled");
+                        var text = "Row - " + booking.seat.row + ", place - " + booking.seat.number + ", price - " + booking.seat.priceCategory.price;
+                        var delButton = "<a name=\"" + booking.id + "\" onclick=\"delBooking(this)\" href=\"#\" class=\"w3-button w3-red\">Delete</a>";
+                        $("#payForm").append("<tr name=\"st\" id=\"" + booking.id + "\" ><td><h5>" + text +  delButton +"</h5></td></tr>");
+                    } else {
+                        $("#" + seatId).removeClass().addClass( "booked").attr("disabled", "disabled");
+                        alert("Sorry, the place is booked!!!");
+                    }
+                }
+            });
         }
     </script>
 </head>
@@ -17,6 +61,8 @@
 
 
 <!--<div th:replace="fragments/adminMenu.html :: top-menu"/>-->
+<input type="hidden" th:value="${vSession.id}" th:id="'vSessionId'"/>
+<input type="hidden" th:value="'1'" th:id="'curUser'"/>
 
 <div class="w3-container w3-margin">
 
@@ -31,17 +77,17 @@
     <table>
     <tr th:each="row: ${seats}">
         <th th:each="seat :${row}">
-            <button class="seat1" th:id="${seat.id}" th:text="${seat.number}" onclick="f(this)"></button>
+            <button class="seat1" th:title="${seat.priceCategory.price}" th:id="${seat.id}" th:text="${seat.number}" onclick="bookingSeat(this)"></button>
         </th>
 
     </tr>
     </table>
-    <!--<ul  class="w3-ul">-->
-        <!--<div th:each="vSession : ${sessions}" class="w3-container">-->
-            <!--<li><a th:href="'/hall?id=' + ${vSession.id}" href="#" th:text="${vSession.movie.name} + '  ' + ${vSession.cinemaHall.name} + '  ' + ${vSession.start}">Name</a></li>-->
+    <table class="w3-table w3-striped w3-bordered" id="payForm">
 
-        <!--</div>-->
-    <!--</ul>-->
+    </table>
+    <div id="payButton">
+
+    </div>
     <div style="height: 24px;"></div>
 
 </div>
