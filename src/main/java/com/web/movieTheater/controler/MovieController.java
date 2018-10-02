@@ -12,7 +12,7 @@ public class MovieController extends BaseSecurityController {
     private MovieService service;
 
 
-    @GetMapping("/movie")
+    @GetMapping("/")
     public ModelAndView getEmployees() {
         ModelAndView modelAndView = createModelAndView("movies");
         modelAndView.addObject("movies", this.service.findAll());

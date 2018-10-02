@@ -20,7 +20,7 @@ public class VideoSession {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")
     private Movie movie;
-    @OneToMany(mappedBy = "videoSession", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "videoSession", fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 
     public Set<Booking> getBookings() {

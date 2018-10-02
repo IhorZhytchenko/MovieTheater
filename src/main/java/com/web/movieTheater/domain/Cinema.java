@@ -15,7 +15,7 @@ public class Cinema {
     private String name;
     @Column(name = "address")
     private String address;
-    @OneToMany(mappedBy = "cinema", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cinema", fetch = FetchType.EAGER)
     private Set<CinemaHall> cinemaHalls = new HashSet<>();
 
     public Set<CinemaHall> getCinemaHalls() {

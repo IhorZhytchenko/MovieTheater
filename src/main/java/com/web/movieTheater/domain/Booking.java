@@ -11,6 +11,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "price")
+    private int price;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "video_session_id")
     @JsonIgnore
@@ -25,6 +27,14 @@ public class Booking {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "booking_type_id")
     private BookingType bookingType;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
     public Long getId() {
         return id;

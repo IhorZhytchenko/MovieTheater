@@ -23,4 +23,18 @@ public class BookingController extends BaseSecurityController {
         return this.service.saveBookingIfNotExists(vsId, seatId, userId);
     }
 
+    @RequestMapping(path = "/session/booking/delete", method = RequestMethod.POST,  produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Long delBooking(@RequestParam long bookingId) {
+        return this.service.deleteWithSeatIdReturn(bookingId);
+    }
+
+    @RequestMapping(path = "/session/booking/sold", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean changeBookingTypeToSold(@RequestParam Long bookingId) {
+           this.service.changeBookingTypeToSold(bookingId);
+           return true;
+
+    }
+
 }

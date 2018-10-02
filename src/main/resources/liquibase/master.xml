@@ -1,0 +1,418 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd ">
+
+    <changeSet id="create role table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="role">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="role" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create users table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="users">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="password" type="varchar(255)"/>
+            <column name="active" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create user_role table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="user_role">
+            <column name="user_id" type="int" >
+                <constraints nullable="false"  primaryKey="true" foreignKeyName="fk_users_role_employee" references="users(id)"/>
+            </column>
+            <column name="role_id" type="int" >
+                <constraints nullable="false"  primaryKey="true" foreignKeyName="fk_users_role_role" references="role(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create movie_state table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="movie_state">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="state" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create movie table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="movie">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="varchar(1000)"/>
+            <column name="photo" type="varchar(255)"/>
+            <column name="movie_state_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_movie_movie_state" references="movie_state(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create cinema table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="cinema">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="address" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create cinema_hall table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="cinema_hall">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="row_count" type="int"/>
+            <column name="cinema_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_cinema_hall_cinema" references="cinema(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create video_session table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="video_session">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="start" type="timestamp"/>
+            <column name="movie_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_video_session_movie" references="movie(id)"/>
+            </column>
+            <column name="cinema_hall_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_cinema_hall_movie" references="cinema_hall(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create price_category table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="price_category">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="price" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create seat table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="seat">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="row" type="int"/>
+            <column name="number" type="int"/>
+            <column name="price_category_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_seat_price_category" references="price_category(id)"/>
+            </column>
+            <column name="cinema_hall_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_cinema_hall_seat" references="cinema_hall(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create booking_type table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="booking_type">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="type" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create booking table" author="igor.zhytchenko@gmail.com">
+        <createTable tableName="booking">
+            <column name="id" type="int" autoIncrement="true" >
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="price" type="int"/>
+            <column name="seat_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_booking_seat" references="seat(id)"/>
+            </column>
+            <column name="user_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_booking_users" references="users(id)"/>
+            </column>
+            <column name="video_session_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_booking_video_session" references="video_session(id)"/>
+            </column>
+            <column name="booking_type_id" type="int" >
+                <constraints nullable="false" foreignKeyName="fk_booking_booking_type" references="booking_type(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="init role" author="igor.zhytchenko@gmail.com">
+        <insert tableName="role">
+            <column name="role" value="ADMIN">
+            </column>
+         </insert>
+        <rollback>
+            DELETE FROM role WHERE role='ADMIN';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init users" author="igor.zhytchenko@gmail.com">
+        <insert tableName="users">
+            <column name="name" value="admin">
+            </column>
+            <column name="email" value="admin">
+            </column>
+            <column name="password" value="admin">
+            </column>
+            <column name="active" value="1">
+            </column>
+        </insert>
+        <rollback>
+            DELETE FROM users WHERE name='admin';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init movie_state" author="igor.zhytchenko@gmail.com">
+        <insert tableName="movie_state">
+            <column name="state" value="box office">
+            </column>
+        </insert>
+        <rollback>
+            DELETE FROM movie_state WHERE state='box office';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init movie 1" author="igor.zhytchenko@gmail.com">
+        <insert tableName="movie">
+            <column name="name" value="Star Wars">
+            </column>
+            <column name="description" value="Description film Star Wars">
+            </column>
+            <column name="movie_state_id" valueComputed="(SELECT id FROM movie_state WHERE state='box office')">
+            </column>
+        </insert>
+        <rollback>
+            DELETE FROM movie WHERE name='Star Wars';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init movie 2" author="igor.zhytchenko@gmail.com">
+        <insert tableName="movie">
+            <column name="name" value="Avenger">
+            </column>
+            <column name="description" value="Description film Avenger">
+            </column>
+            <column name="movie_state_id" valueComputed="(SELECT id FROM movie_state WHERE state='box office')">
+            </column>
+        </insert>
+        <rollback>
+            DELETE FROM movie WHERE name='Avenger';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init cinema" author="igor.zhytchenko@gmail.com">
+        <insert tableName="cinema">
+            <column name="name" value="Cinema1">
+            </column>
+            <column name="address" value="Some Address">
+            </column>
+
+        </insert>
+        <rollback>
+            DELETE FROM cinema WHERE name='Cinema1';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init cinema_hall" author="igor.zhytchenko@gmail.com">
+        <insert tableName="cinema_hall">
+            <column name="name" value="Hall1">
+            </column>
+            <column name="row_count" value="5">
+            </column>
+            <column name="cinema_id" valueComputed="(SELECT id FROM cinema WHERE name='Cinema1')">
+            </column>
+        </insert>
+        <rollback>
+            DELETE FROM cinema_hall WHERE name='Hall1';
+        </rollback>
+    </changeSet>
+
+    <changeSet id="init video_session" author="igor.zhytchenko@gmail.com">
+        <insert tableName="video_session">
+            <column name="movie_id" valueComputed="(SELECT id FROM movie WHERE name='Star Wars')">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="start" value="2018-10-19 10:25:00">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init price_category" author="igor.zhytchenko@gmail.com">
+        <insert tableName="price_category">
+            <column name="price" value="85">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init booking_type 1" author="igor.zhytchenko@gmail.com">
+        <insert tableName="booking_type">
+            <column name="type" value="booked">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init booking_type 2" author="igor.zhytchenko@gmail.com">
+        <insert tableName="booking_type">
+            <column name="type" value="sold">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 1" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="1">
+            </column>
+            <column name="number" value="1">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 2" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="1">
+            </column>
+            <column name="number" value="2">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 3" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="1">
+            </column>
+            <column name="number" value="3">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 4" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="1">
+            </column>
+            <column name="number" value="4">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 5" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="1">
+            </column>
+            <column name="number" value="5">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 6" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="2">
+            </column>
+            <column name="number" value="1">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 7" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="2">
+            </column>
+            <column name="number" value="2">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 8" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="2">
+            </column>
+            <column name="number" value="3">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 9" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="2">
+            </column>
+            <column name="number" value="4">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="init seat 10" author="igor.zhytchenko@gmail.com">
+        <insert tableName="seat">
+            <column name="row" value="2">
+            </column>
+            <column name="number" value="5">
+            </column>
+            <column name="cinema_hall_id" valueComputed="(SELECT id FROM cinema_hall WHERE name='Hall1')">
+            </column>
+            <column name="price_category_id" value="1">
+            </column>
+        </insert>
+    </changeSet>
+
+
+    <changeSet id="init user_role" author="igor.zhytchenko@gmail.com">
+        <insert tableName="user_role">
+            <column name="user_id" valueComputed="(SELECT id FROM users WHERE name = 'admin')">
+            </column>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE role = 'ADMIN')">
+            </column>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

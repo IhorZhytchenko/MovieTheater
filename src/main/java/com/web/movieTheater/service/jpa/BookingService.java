@@ -21,6 +21,12 @@ public class BookingService {
 
 
 
+    public void changeBookingTypeToSold(Long id) {
+        Booking booking = this.findById(id);
+        booking.setBookingType(this.bookingTypeService.findByType("sold"));
+        this.save(booking);
+    }
+
     public Booking saveBookingIfNotExists(Long videoSessionId, Long seatId, Long userId) {
         Booking booking = null;
         if (!(this.existsByVideoSessionIdAndSeatId(videoSessionId, seatId))) {
@@ -29,6 +35,7 @@ public class BookingService {
             booking.setVideoSession(this.videoSessionService.findById(videoSessionId));
             booking.setUser(this.userService.findById(userId));
             booking.setBookingType(this.bookingTypeService.findByType("booked"));
+            booking.setPrice(booking.getSeat().getPriceCategory().getPrice());
             booking = this.save(booking);
         }
 
@@ -37,10 +44,8 @@ public class BookingService {
     public Booking save(Booking booking) {
         return this.repository.save(booking);
     }
-    public void delete(Long id) {
-        if (id != null) {
-            this.repository.deleteById(id);
-        }
+    public void delete(Booking booking) {
+            this.repository.delete(booking);
     }
     public List<Booking> findAll() {
         return this.repository.findAll();
@@ -54,6 +59,13 @@ public class BookingService {
     }
     public boolean existsByVideoSessionIdAndSeatId(Long videoSessionId, Long seatId) {
         return this.repository.existsBookingByVideoSessionIdAndSeatId(videoSessionId, seatId);
+    }
+
+    public Long deleteWithSeatIdReturn(Long id) {
+        Booking booking = this.findById(id);
+        Long result = booking.getSeat().getId();
+        this.delete(booking);
+        return result;
     }
 
 }

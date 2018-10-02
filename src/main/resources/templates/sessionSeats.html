@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Movies</title>
+    <title>Seats</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
@@ -47,7 +47,9 @@
                         $("#" + booking.seat.id).removeClass().addClass( "booked").attr("disabled", "disabled");
                         var text = "Row - " + booking.seat.row + ", place - " + booking.seat.number + ", price - " + booking.seat.priceCategory.price;
                         var delButton = "<a name=\"" + booking.id + "\" onclick=\"delBooking(this)\" href=\"#\" class=\"w3-button w3-red\">Delete</a>";
-                        $("#payForm").append("<tr name=\"st\" id=\"" + booking.id + "\" ><td><h5>" + text +  delButton +"</h5></td></tr>");
+                        var buyButton = "<a id='buyBtn' onclick=\"buyBooking()\" href=\"#\" class=\"w3-button w3-yellow\">Buy all</a>";
+                        $("#payForm").append("<tr name=\"st\" id=\"b" + booking.id + "\" ><td><h5>" + text +  delButton +"</h5></td></tr>");
+                        $("#payButton").empty().append(buyButton);
                     } else {
                         $("#" + seatId).removeClass().addClass( "booked").attr("disabled", "disabled");
                         alert("Sorry, the place is booked!!!");
@@ -55,18 +57,59 @@
                 }
             });
         }
+
+        function delBooking(el) {
+            var bookingId = el.getAttribute("name");
+            $("#b" + bookingId).remove();
+            if ($('tr[name=st]').length == 0) {
+                $("#buyBtn").remove();
+            }
+            $.ajax({
+                type: "POST",
+                url: './booking/delete',
+                data: {
+                    bookingId: bookingId
+                },
+                complete: function (data) {
+                    var seatId = JSON.parse(data.responseText);
+                    $("#" + seatId).removeClass().addClass( "seat1").removeAttr("disabled");
+                }
+            });
+
+        }
+        function buyBooking() {
+            var elements = $('tr[name=st]')
+            for(var i = 0; i < elements.length; i++) {
+                var bookingId = (elements[i].id.substr(1));
+                $.ajax({
+                    type: "POST",
+                    url: './booking/sold',
+                    data: {
+                        bookingId: bookingId
+                    }
+                });
+                $("#payButton").empty();
+                $("#payForm").empty();
+            }
+
+        }
+
     </script>
 </head>
 <body>
 
 
-<!--<div th:replace="fragments/adminMenu.html :: top-menu"/>-->
+<!--<div th:replace="fragments/menu.html :: top-menu"/>-->
 <input type="hidden" th:value="${vSession.id}" th:id="'vSessionId'"/>
 <input type="hidden" th:value="'1'" th:id="'curUser'"/>
 
 <div class="w3-container w3-margin">
 
-
+    <div style="height: 24px;"></div>
+    <div class="w3-container">
+        <a class="w3-button w3-right  w3-purple w3-large" href="/">back to movie</a>
+    </div>
+    <div style="height: 24px;"></div>
     <div class="w3-container w3-purple">
         <h3 th:text="${vSession.movie.name}">Video</h3>
     </div>

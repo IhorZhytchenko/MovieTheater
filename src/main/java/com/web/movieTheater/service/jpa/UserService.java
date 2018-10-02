@@ -26,6 +26,7 @@ public class UserService {
     }
     public User findById(Long id)
     {
+        System.out.println(id);
         return this.repository.findById(id).orElse(null);
     }
     public boolean exists(Long id) {

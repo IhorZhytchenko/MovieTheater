@@ -17,9 +17,9 @@ public class CinemaHall {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cinema_id")
     private Cinema cinema;
-    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER)
     private Set<Seat> seats = new HashSet<>();
-    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cinemaHall", fetch = FetchType.EAGER)
     private Set<VideoSession> videoSessions = new HashSet<>();
 
     public Set<VideoSession> getVideoSessions() {
